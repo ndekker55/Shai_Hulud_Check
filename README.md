@@ -33,7 +33,7 @@ In September-November 2025, a self-replicating worm called "Shai-Hulud" compromi
 YOU MUST FIRST ALLOW THE SYSTEM TO RUN THE POWERSHELL SCRIPT
 
 ```powershell
-Set-ExcecutionPolicy -Scope Process -ExecutionPolicy Bypass
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ```
 
 ### Basic scan (current directory)
