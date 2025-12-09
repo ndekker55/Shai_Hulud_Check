@@ -197,7 +197,7 @@ if ($DockerService) {
 
         # Docker Check 1: Malicious files
         Write-Status "Scanning container for malicious files..." "INFO"
-        $execArgs = $composeArgs + @("exec", $DockerService, "find", "/app", "-name", "setup_bun.js", "-o", "-name", "bun_environment.js")
+        $execArgs = $composeArgs + @("exec", $DockerService, "find", "/app/node_modules", "-name", "setup_bun.js", "-o", "-name", "bun_environment.js")
         $dockerFiles = & docker compose @execArgs 2>$null
 
         if ($dockerFiles) {
@@ -209,7 +209,7 @@ if ($DockerService) {
 
         # Docker Check 2: Shai-Hulud references
         Write-Status "Scanning container for Shai-Hulud references..." "INFO"
-        $execArgs = $composeArgs + @("exec", $DockerService, "grep", "-ri", "shai.hulud", "/app")
+        $execArgs = $composeArgs + @("exec", $DockerService, "grep", "-ri", "shai.hulud", "/app/node_modules")
         $dockerShai = & docker compose @execArgs 2>$null
 
         if ($dockerShai) {
@@ -222,7 +222,7 @@ if ($DockerService) {
 
         # Docker Check 3: Metadata exfiltration
         Write-Status "Scanning container for metadata exfiltration patterns..." "INFO"
-        $execArgs = $composeArgs + @("exec", $DockerService, "grep", "-r", "169.254.169.254", "/app")
+        $execArgs = $composeArgs + @("exec", $DockerService, "grep", "-r", "169.254.169.254", "/app/node_modules")
         $dockerMeta = & docker compose @execArgs 2>$null
 
         if ($dockerMeta) {
