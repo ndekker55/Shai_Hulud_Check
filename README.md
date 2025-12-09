@@ -50,18 +50,40 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 ### Scan with Docker container
 
+**Important:** The script uses Docker Compose to interact with containers. You must run it from the directory containing your project's `docker-compose.yml` file, or Docker Compose won't recognize the service name.
+
+#### Step 1: Find your running containers
+
 ```powershell
 docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}"
 ```
-OUTPUT
-  | Name                             | Image                               | Service Name  |
-  |----------------------------------|-------------------------------------|---------------|
-  | DOCKERNAME-DOCKERSERVICE-PROFILE | IMAGENAME-IMAGESERVICE-PROFILE      | DOCKERSERVICE |
-  | DOCKERNAME-DOCKERSERVICE-PROFILE | IMAGENAME-IMAGESERVICE              | DOCKERSERVICE |
+
+Example output:
+| Name                             | Image                               | Service Name  |
+|----------------------------------|-------------------------------------|---------------|
+| `myproject-frontend-1`           | myproject-frontend                  | `frontend`    |
+| `myproject-backend-1`            | myproject-backend                   | `backend`     |
+| `myproject-app-dev`              | myproject-app-dev                   | `app-dev`     |
+
+The **service name** is typically the middle portion of the container name (between the project name and the instance number/profile).
+
+#### Step 2: Navigate to the project directory
 
 ```powershell
-.\check-shai-hulud.ps1 -DockerService "DOCKERSERVICE" -DockerProfile "PROFILE"
+cd C:\path\to\your\project  # Directory containing docker-compose.yml
 ```
+
+#### Step 3: Run the scan
+
+Use the **absolute path** to the script (no `.\` prefix needed):
+
+```powershell
+C:\github\Shai_Hulud_Check\check-shai-hulud.ps1 -DockerService "frontend" -DockerProfile "dev"
+```
+
+**Note:** Only use `.\` when running a script from the current directory. When using an absolute path like `C:\github\...`, do not include the `.\` prefix or you will get path errors.
+
+If you see `Container 'servicename' is not running`, you're likely in the wrong directory. Make sure you're in the directory containing the `docker-compose.yml` for that service.
 
 ### Full scan (local + Docker)
 
