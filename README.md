@@ -51,7 +51,16 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ### Scan with Docker container
 
 ```powershell
-.\check-shai-hulud.ps1 -DockerService "DOCKER_CONTAINER_NAME" -DockerProfile "PROFILE"
+docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}"
+```
+OUTPUT
+  | Name                             | Image                               | Service Name  |
+  |----------------------------------|-------------------------------------|---------------|
+  | DOCKERNAME-DOCKERSERVICE-PROFILE | IMAGENAME-IMAGESERVICE-PROFILE      | DOCKERSERVICE |
+  | DOCKERNAME-DOCKERSERVICE-PROFILE | IMAGENAME-IMAGESERVICE              | DOCKERSERVICE |
+
+```powershell
+.\check-shai-hulud.ps1 -DockerService "DOCKERSERVICE" -DockerProfile "PROFILE"
 ```
 
 ### Full scan (local + Docker)
